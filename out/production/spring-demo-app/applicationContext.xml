@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <!--load the properties file: sport.properties-->
+    <!--this connects the properties file with the application context file-->
+    <context:property-placeholder location="classpath:sport.properties"/>
+
+    <!--define your beans-->
+    <bean id="happyFortuneService" class="com.ushwamala.javacourse.Spring.HappyFortuneService"/>
+
+    <bean id="baseballCoach" class="com.ushwamala.javacourse.Spring.BaseballCoach">
+        <!--Constructor injection-->
+        <constructor-arg ref="happyFortuneService"/>
+    </bean>
+
+    <bean name="cricketCoach" class="com.ushwamala.javacourse.Spring.CricketCoach">
+        <!--Setter injection-->
+        <property name="fortuneService" ref="happyFortuneService"/>
+        <!--Literal values injection-->
+        <property name="emailAddress" value="${foo.email}"/>
+        <property name="team" value="${foo.team}"/>
+    </bean>
+
+    <!--scope="protoType ensures that a new bean is crated every time the bean is called-->
+    <bean id="trackCoach" class="com.ushwamala.javacourse.Spring.TrackCoach" scope="protoType">
+        <constructor-arg ref="happyFortuneService"/>
+    </bean>
+    <context:annotation-config/>
+</beans>
